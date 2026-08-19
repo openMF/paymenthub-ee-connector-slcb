@@ -60,3 +60,18 @@ bin/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# From the connector before it moved here
+HELP.md
+.gradle
+.apt_generated
+.factorypath
+.settings
+.springBeans
+.sts4-cache
+.idea
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/

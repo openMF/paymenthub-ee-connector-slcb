@@ -1,0 +1,61 @@
+camel:
+  server-port: ${PORT:5000}
+  springboot:
+    main-run-controller: true
+  dataformat:
+    # Camel 4 renamed this data format from `json-jackson` to `jackson`, so the
+    # old key no longer matches anything and has to be renamed here too.
+    # Note: the flag only picks up an ObjectMapper when the registry holds
+    # exactly one. This app has two (`objectMapper` and `csvMapper`, which
+    # extends ObjectMapper), so Camel keeps using its own default mapper, the
+    # same as before. Changing that would change the JSON sent to SLCB, so it
+    # is left alone here.
+    jackson:
+      auto-discover-object-mapper: true
+
+
+zeebe:
+  client:
+    max-execution-threads: 100
+    number-of-workers: 8
+    evenly-allocated-max-jobs: "#{${zeebe.client.max-execution-threads} / ${zeebe.client.number-of-workers}}"
+    ttl: 30000
+  broker:
+    contactpoint: "127.0.0.1:26500"
+
+cloud:
+  aws:
+    bucket-name: ${AWS_BUCKET_NAME:paymenthub-ee-dev}
+    enabled: true
+    credentials:
+      access-key: ${AWS_ACCESS_KEY:access_key_from_aws}
+      secret-key: ${AWS_SECRET_KEY:secret_key_from_aws}
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+
+slcb:
+  auth:
+    host: ${SLCB_AUTH_HOST:https://g2p-test.slcb.com:8443}
+    auth-endpoint: /api/auth
+    username: ${SLCB_USERNAME:username}
+    password: ${SLCB_PASSWORD:password}
+  api:
+    host: ${SLCB_API_HOST:https://g2p-test.slcb.com:8443}
+    transaction-request-endpoint: /api/transactionRequest
+    reconciliation-endpoint: /reconciliation
+    account-balance-endpoint: /accountBalance
+  signature:
+    key: ${SLCB_SIGNATURE_KEY:very_long_string}
+  account:
+    number: "${SLCB_SOURCE_ACCOUNT:003001003879112168}"
+    type: 0
+  institutionCode: "SLCB"
+
+config:
+  date-format: "yyyy-MM-dd'T'hh:mm:ssXXX"
+  reconciliation:
+    enable: false
+
+dfspids: "DFSPID"
