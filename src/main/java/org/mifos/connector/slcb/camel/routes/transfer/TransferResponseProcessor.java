@@ -6,7 +6,6 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 
@@ -20,9 +19,6 @@ public class TransferResponseProcessor implements Processor {
     private ZeebeClient zeebeClient;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Value("${zeebe.client.ttl}")
-    private int timeToLive;
 
     @Override
     public void process(Exchange exchange) {

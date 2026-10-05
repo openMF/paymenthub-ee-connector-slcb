@@ -1,10 +1,10 @@
 package org.mifos.connector.slcb.camel.routes.file;
 
 import org.mifos.connector.slcb.camel.routes.transfer.BaseSLCBRouteBuilder;
+import org.mifos.connector.slcb.config.CloudAwsProperties;
 import org.mifos.connector.slcb.file.FileTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,8 +18,11 @@ public class FileRoute extends BaseSLCBRouteBuilder {
     @Qualifier("awsStorage")
     private FileTransferService fileTransferService;
 
-    @Value("${cloud.aws.bucket-name}")
-    private String bucketName;
+    private final String bucketName;
+
+    public FileRoute(CloudAwsProperties awsProperties) {
+        this.bucketName = awsProperties.bucketName();
+    }
 
     @Override
     public void configure() throws Exception {
