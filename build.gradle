@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.mifos:paymenthub-ee-core:2.0.0-SNAPSHOT'
     implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Bean Validation for the @Validated configuration records: nothing else
+    // on the classpath provides it (camel-validator is the XML one).
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework:spring-web'
     implementation 'org.apache.camel:camel-endpointdsl'
     implementation 'org.apache.camel:camel-jetty'

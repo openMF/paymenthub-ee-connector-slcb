@@ -1,67 +1,56 @@
 package org.mifos.connector.slcb.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
-
+/**
+ * The SLCB settings the routes read, in one place, built from {@link SlcbProperties} and {@link ConfigProperties}.
+ *
+ * <p>
+ * The fields keep the names and types the routes already use, so no route changes.
+ * </p>
+ */
 @Component
 public class SLCBConfig {
 
-    @Value("${slcb.auth.host}")
-    public String authHost;
+    public final String authHost;
+    public final String username;
+    public final String password;
+    public final String authEndpoint;
+    public final String apiHost;
+    public final String transferRequestEndpoint;
+    public final String reconciliationEndpoint;
+    public final String accountBalanceEndpoint;
+    public final String signatureKey;
+    public final String sourceAccount;
+    public final int accountType;
+    public final String institutionCode;
+    public final boolean isReconciliationEnabled;
+    public final String dateFormat;
 
-    @Value("${slcb.auth.username}")
-    public String username;
+    public final String authUrl;
+    public final String transactionRequestUrl;
+    public final String reconciliationUrl;
+    public final String accountBalanceUrl;
 
-    @Value("${slcb.auth.password}")
-    public String password;
+    public SLCBConfig(SlcbProperties slcb, ConfigProperties config) {
+        authHost = slcb.auth().host();
+        username = slcb.auth().username();
+        password = slcb.auth().password();
+        authEndpoint = slcb.auth().authEndpoint();
+        apiHost = slcb.api().host();
+        transferRequestEndpoint = slcb.api().transactionRequestEndpoint();
+        reconciliationEndpoint = slcb.api().reconciliationEndpoint();
+        accountBalanceEndpoint = slcb.api().accountBalanceEndpoint();
+        signatureKey = slcb.signature().key();
+        sourceAccount = slcb.account().number();
+        accountType = slcb.account().type();
+        institutionCode = slcb.institutionCode();
+        isReconciliationEnabled = config.reconciliation().enable();
+        dateFormat = config.dateFormat();
 
-    @Value("${slcb.auth.auth-endpoint}")
-    public String authEndpoint;
-
-    @Value("${slcb.api.host}")
-    public String apiHost;
-
-    @Value("${slcb.api.transaction-request-endpoint}")
-    public String transferRequestEndpoint;
-
-    @Value("${slcb.api.reconciliation-endpoint}")
-    public String reconciliationEndpoint;
-
-    @Value("${slcb.api.account-balance-endpoint}")
-    public String accountBalanceEndpoint;
-
-    @Value("${slcb.signature.key}")
-    public String signatureKey;
-
-    @Value("${slcb.account.number}")
-    public String sourceAccount;
-
-    @Value("${slcb.account.type}")
-    public int accountType;
-
-    @Value("${slcb.institutionCode}")
-    public String institutionCode;
-
-    @Value("${config.reconciliation.enable}")
-    public boolean isReconciliationEnabled;
-
-    @Value("${config.date-format}")
-    public String dateFormat;
-
-    public String authUrl;
-    public String transactionRequestUrl;
-    public String reconciliationUrl;
-    public String accountBalanceUrl;
-
-    @PostConstruct
-    private void setup() {
         authUrl = authHost + authEndpoint;
         transactionRequestUrl = apiHost + transferRequestEndpoint;
         reconciliationUrl = apiHost + reconciliationEndpoint;
         accountBalanceUrl = apiHost + accountBalanceEndpoint;
     }
-
-
 }

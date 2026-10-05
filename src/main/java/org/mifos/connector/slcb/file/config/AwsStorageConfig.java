@@ -5,7 +5,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import org.springframework.beans.factory.annotation.Value;
+import org.mifos.connector.slcb.config.CloudAwsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +13,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AwsStorageConfig {
 
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
+    private final String accessKey;
 
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String accessSecret;
+    private final String accessSecret;
 
-    @Value("${cloud.aws.region.static}")
-    private String region;
+    private final String region;
+
+    public AwsStorageConfig(CloudAwsProperties awsProperties) {
+        this.accessKey = awsProperties.credentials().accessKey();
+        this.accessSecret = awsProperties.credentials().secretKey();
+        this.region = awsProperties.region().staticRegion();
+    }
 
     @Bean
     @ConditionalOnProperty(
