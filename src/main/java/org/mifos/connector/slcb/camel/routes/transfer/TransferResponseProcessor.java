@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.time.Duration;
 import java.util.Map;
+import org.mifos.connector.slcb.config.ZeebeProperties;
 
 import static org.mifos.connector.slcb.camel.config.CamelProperties.*;
 import static org.mifos.connector.slcb.zeebe.ZeebeVariables.*;
@@ -17,6 +19,9 @@ public class TransferResponseProcessor implements Processor {
 
     @Autowired
     private ZeebeClient zeebeClient;
+
+    @Autowired
+    private ZeebeProperties zeebeProperties;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -37,6 +42,7 @@ public class TransferResponseProcessor implements Processor {
             zeebeClient.newPublishMessageCommand()
                     .messageName(TRANSFER_MESSAGE)
                     .correlationKey(exchange.getProperty(TRANSACTION_ID, String.class))
+                    .timeToLive(Duration.ofMillis(zeebeProperties.client().ttl()))
                     .variables(variables)
                     .send()
                     .join();

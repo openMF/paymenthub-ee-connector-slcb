@@ -71,6 +71,7 @@ class ShippedConfigBindsTest {
             ZeebeProperties zeebe = context.getBean(ZeebeProperties.class);
             assertThat(zeebe.broker().contactpoint()).isEqualTo("127.0.0.1:26500");
             assertThat(zeebe.client().maxExecutionThreads()).isEqualTo(100);
+            assertThat(zeebe.client().ttl()).isEqualTo(30000);
             SlcbProperties slcb = context.getBean(SlcbProperties.class);
             assertThat(slcb.auth().authEndpoint()).isEqualTo("/api/auth");
             assertThat(slcb.auth().host()).isNotEmpty();

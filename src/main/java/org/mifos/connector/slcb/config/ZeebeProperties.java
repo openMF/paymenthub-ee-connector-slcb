@@ -36,7 +36,9 @@ public record ZeebeProperties(@NotNull @Valid Broker broker, @NotNull @Valid Cli
      *
      * @param maxExecutionThreads
      *            size of the job worker execution thread pool
+     * @param ttl
+     *            how long a published Zeebe message stays correlatable, in milliseconds
      */
-    public record Client(@NotNull Integer maxExecutionThreads) {
+    public record Client(@NotNull Integer maxExecutionThreads, @NotNull Integer ttl) {
     }
 }
